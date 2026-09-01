@@ -2,7 +2,7 @@ interface:
   display_name: "需求落地助手"
   short_description: "把需求整理成中文 issue、Mermaid 图与可执行行动指南"
   brand_color: "#2563EB"
-  default_prompt: "使用 $build-it-up，用具体场景图和有限的决策卡片澄清这个需求；信息足够后直接推进，不要进行无限追问。"
+  default_prompt: "使用 $build-it-up，用具体场景图和有限的决策卡片澄清这个需求；先报告 Mermaid 与 draw.io 能力，信息足够后直接推进，不要进行无限追问。"
 
 policy:
   allow_implicit_invocation: true
