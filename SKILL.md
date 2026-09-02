@@ -15,7 +15,7 @@ description: 在开始写代码前，把产品或工程需求整理成通俗易�
 - 每轮对话最多提出一个需要用户决定的问题。不要在同一条消息里要求用户同时确认多个命令、范围、技术选型或验收标准。
 - 这是有边界的共识建立，不是持续访谈。默认最多推进 1 个主要方向确认和 1 个最终共识确认；不要为了“更完整”不断新增问题。
 - 只把会改变产品目标、用户可观察行为、工作范围、验收标准或不可逆技术取舍的内容交给用户决定。低风险的命名、文件位置、实现顺序、测试框架和普通技术细节由 AI 采用合理默认值，并记录为假设。
-- 第一轮必须主动报告图表能力：Mermaid 是否可直接生成、是否检测到 draw.io 网页版/桌面版控制能力，以及当前能交付到哪一步。能力报告只是告知，不要为了它额外发起一个确认问题。规则见 [references/drawio-binding.md](references/drawio-binding.md)。
+- 第一轮必须主动报告图表能力：Mermaid、`.drawio` 文件 / URL、网页编辑器、浏览器现有画布和 Desktop 当前画布分别达到哪一级；没有真实工具探测和成功回读，就不得声称“已连接”或“可以驱动”。能力报告只是告知，不要为了它额外发起一个确认问题。规则见 [references/drawio-binding.md](references/drawio-binding.md)。
 - 第一轮禁止直接输出完整 issue、完整实现指南、长 Mermaid 图、完整风险清单或一串待确认事项；先输出决策卡片。决策卡片格式见 [references/decision-card.md](references/decision-card.md)。
 - 每张决策卡片默认必须配一张能让人“一眼看懂”的图；复杂问题可以配两到三张互补图。图的类型由 AI 根据问题自动选择，不要求用户先指定类型。图要先于长篇解释出现。
 - 用户确认前，可以只读检查仓库并生成草稿；不得写实现代码，不得创建或修改外部 issue，不得修改 draw.io 文档。
@@ -24,6 +24,7 @@ description: 在开始写代码前，把产品或工程需求整理成通俗易�
 - 代码实施完成后的“阶段完成卡”是可选流程，不是默认的额外讨论。完成代码和适用验证后，只询问一次用户是否需要；用户拒绝就直接结束，不再追问。
 - 这是一个从思想到代码再回到证据的闭环：issue/设计记录定义意图，example 展示最短公共 API 组装路径，断点指南解释关键状态，验证结果证明行为，commit 固化本次实现。不能只在聊天中解释而不把闭环记录落到仓库。
 - Commit 不是随手写的收尾备注，而是闭环中的正式记录。每次提交都要按 [references/commit-recording.md](references/commit-recording.md) 使用统一写法；提交标题和记录正文的主要语言根据用户当前语言确定。
+- draw.io 的“生成文件”“打开编辑器”“控制浏览器现有画布”和“控制 Desktop 当前画布”是不同能力，必须按 [references/drawio-binding.md](references/drawio-binding.md) 使用 D0-D4 分级；没有真实工具探测和成功回读，不得声称已连接或已驱动。
 - 所有阶段 example 必须归档在项目唯一的 canonical example 根目录下；每个阶段使用独立目录和 README，不得散落在临时目录或多个未说明的路径中。项目 README、context 和 AGENTS / 等价 agents 文件必须说明这个目录、读取顺序、运行入口和同步规则。详细规范见 [references/project-integration.md](references/project-integration.md)。
 
 ## 工作流程
@@ -36,6 +37,7 @@ description: 在开始写代码前，把产品或工程需求整理成通俗易�
 6. 所有关键决策完成后，按 [references/issue-template.md](references/issue-template.md) 组装完整 issue 草案，并展示一份便于人快速审阅的“最终共识卡片”。此时仍然不要发布 issue，除非用户明确确认。
 7. 用户明确确认最终共识后，通过仓库可用的 tracker 创建或更新 issue。使用 issue 标识作为相关图表名称和链接的统一主键。如果没有 tracker，则保存 Markdown issue 产物，并明确说明它只是本地草稿，不能假装已经发布。
 8. 如果用户要求连接 draw.io，按 [references/drawio-binding.md](references/drawio-binding.md) 执行。环境支持时，优先使用已连接的桌面版或网页版 diagrams.net；否则提供准确的 Mermaid 源码和 draw.io 导入、互链交接步骤，并明确哪些步骤仍需手工完成。
+   连接或驱动 draw.io 时，必须先按 D0-D4 完成真实工具探测和成功回读；D1 文件交付、D2 打开网页不能替代 D3/D4 实时控制。目标等级不可用时，停止在已证实等级并交付降级结果。
 9. 完成已确认的 issue 和图表交接后停止，除非用户另外要求实现。如果用户要求实现，先复述已确认的范围，再以 issue 为行动指南开始编码，并在决策变化时同步更新 issue。
 10. 如果用户要求了实现，开始编码前先按 [references/project-integration.md](references/project-integration.md) 发现或建立项目级导航：确定 canonical example 根目录，并检查 README、context、AGENTS / 等价 agents 文件是否说明 example 的位置和读取顺序。代码修改时把本阶段 example 放入该根目录，更新 example 索引；代码路径或稳定事实变化时同步更新 context。不要把阶段细节堆进 AGENTS，那里只保留稳定工作规则。
 11. 代码修改和适用验证完成后，只发送一次可选提示：“实现已完成，验证结果：<一句话结果>。是否生成阶段完成卡，展示关键路径断点、真实 example、图和验证证据？”用户确认后，按 [references/stage-completion-card.md](references/stage-completion-card.md) 输出，并把阶段完成卡、实现记录和项目级导航更新落到仓库；用户拒绝、没有回复或未要求时，直接给出普通完成摘要，不要重新开启需求访谈。
@@ -92,15 +94,26 @@ description: 在开始写代码前，把产品或工程需求整理成通俗易�
 
 ```text
 图表能力：
-- Mermaid：可直接生成并在支持的平台渲染。
-- draw.io 网页版：<已检测到可操作 / 未检测到浏览器控制能力 / 需用户打开后才能继续>。
-- draw.io 桌面版：<已检测到可操作 / 未检测到桌面控制能力 / 需用户打开后才能继续>。
+- Mermaid（D0）：可直接生成并在支持的平台渲染。
+- `.drawio` 文件 / URL（D1）：<已确认可生成 / 未确认>。
+- draw.io 网页编辑器（D2）：<已打开并读到状态 / 未配置 / 未检测到浏览器控制>。
+- 浏览器现有画布（D3）：<已连接并能回读 / 只有打开能力 / 未检测到 live 工具>。
+- Desktop 当前画布（D4）：<已连接并能回读 / 未检测到 Desktop live 工具 / 连接失败>。
 - 当前交付：<可以直接完成什么；哪些步骤需要用户手工完成>。
 ```
 
 能力状态必须基于当前任务实际暴露的工具或已成功执行的操作，不得因为仓库有 `drawio-binding.md` 就声称能操作 draw.io。没有专用连接器时，Mermaid 仍然可以正常交付；draw.io 只报告可行的导入、保存和互链路径。
 
 如果 draw.io 能力可用，在用户确认最终方案后可以执行绑定；如果不可用，仍要主动提供准确的 Mermaid 源码、建议文件名、导入方式和互链手册。不要把“用户没有要求 draw.io”理解成“用户不需要知道 draw.io 是否可用”。
+
+上面的“能力可用”必须解释为已经达到目标等级并完成成功回读，而不是仅仅知道某个安装命令。若用户要求实时驱动当前画布，先确认是浏览器画布还是 Desktop 画布，再分别验证 D3 或 D4；D1 文件交付和 D2 打开网页不能替代 D3/D4。
+
+## draw.io 执行硬规则
+
+- 先检查当前宿主实际暴露的 draw.io MCP、浏览器控制或桌面控制工具；没有工具就直接标记为未配置，不进入假想操作。
+- 每次连接或写入后必须回读文档 / 页面 / 元素状态，或截图确认目标真的变化；只发出命令不算成功。
+- 如果目标等级不可用，停止在已证实的等级，给出 Mermaid、可选 `.drawio` 文件、失败证据和最短配置路径，不要反复讨论或声称“稍后同步”。
+- 标准 MCP、MCP App、Codex CLI 插件、浏览器扩展和 Desktop live 通道互不等价；当前 Codex Desktop 不得默认当成 Codex CLI 或 MCP Apps 宿主。
 
 ## 具体可视化
 

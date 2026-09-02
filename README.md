@@ -158,6 +158,10 @@ ISSUE-123__user-login-flow
 
 本仓库没有虚构的 draw.io API 或固定连接器。如果当前环境无法控制 draw.io，skill 会提供 Mermaid 源码、建议文件名和手工导入及互链步骤，并明确说明哪些内容仍需手工完成。
 
+这里必须区分五种能力：Mermaid（D0）、生成 `.drawio` 文件或 URL（D1）、打开网页编辑器（D2）、实时修改浏览器现有画布（D3）和实时修改 Desktop 当前画布（D4）。只有真实工具探测成功并能回读状态，才会报告“已连接”。能生成文件不等于能驱动已经打开的画布；官方 MCP App、标准 MCP、Codex CLI 插件、浏览器桥接和 Desktop live 通道也不是同一种能力。详细探测、宿主限制和降级流程见 [`references/drawio-binding.md`](references/drawio-binding.md)。
+
+如果当前环境没有达到用户要求的等级，skill 会停在已证实的能力，明确报告“当前未驱动 draw.io”，并交付 Mermaid、可选 `.drawio` 文件、失败原因和最短配置路径，不会输出虚假的“绑定完成”。
+
 ### 项目级导航与 Example
 
 实现阶段不会把 example 写到聊天消息或临时目录里。它会先识别项目已有的 example、context 和 AI 指令约定；没有约定时，默认使用：

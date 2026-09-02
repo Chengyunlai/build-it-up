@@ -16,6 +16,7 @@
 | Commit | 哪一次提交固化了这次阶段结果，提交信息如何表达 | issue、实现记录和 Git 历史 |
 | 实现记录 | 如何从需求回放到代码和证据 | `docs/implementation/`、设计文档或仓库既有记录目录 |
 | 项目导航 | 其他人和 AI 从哪里找到规则、context、example 和实现记录 | 项目 `README.md`、`AGENTS.md` / 等价文件、context、`examples/README.md` |
+| draw.io 状态 | 当前实际能生成、打开或控制到哪一级 | issue、阶段完成卡和实现记录 |
 
 不要为了满足表格而凭空创建多个重复文档。优先更新已有 issue、设计记录和 example 文档；只有仓库没有合适位置时，才新建一份实现记录。
 
@@ -116,6 +117,7 @@ Example 不是演示装饰，也不是只为测试服务的 fixture。它必须�
 6. 在 example 文档或实现记录中加入 issue key、C1 SHA 和 C2 SHA。
 7. 如果使用了 draw.io 图，记录实际文件/URL、issue key 和对应 C1/C2；如果没有实际连接能力，记录 Mermaid 和手工交接状态。
 8. 按 [project-integration.md](project-integration.md) 检查项目 README、context、AGENTS / 等价 agents 文件和 example 总索引是否能导航到本阶段；把稳定导航和记录放入 C2。
+9. 如果涉及 draw.io，按 [drawio-binding.md](drawio-binding.md) 回填 D0-D4 能力等级、宿主 / 工具、探测与回读证据、真实 URL / 路径和未完成步骤；D1/D2 不得冒充 D3/D4。
 
 如果仓库流程要求把代码和记录放在同一个 commit，可以先写入不含 SHA 的记录，再提交代码，随后立即修订记录并 amend；最终报告仍要明确“代码内容和记录内容在同一最终 SHA 中”。不要声称一个尚未创建的 SHA 已经被记录。
 
@@ -151,6 +153,9 @@ Example 不是演示装饰，也不是只为测试服务的 fixture。它必须�
 
 ## Commit 规范检查
 <标题语言、type/scope、单一目的、实际验证和 C1/C2 关系>
+
+## draw.io 状态
+<D0-D4、宿主 / 工具、探测回读证据、真实 URL / 路径和未完成步骤；不涉及则写“未涉及”>
 
 ## 下一阶段入口
 <从哪个已完成结果继续；不在这里重新提出设计问题>
