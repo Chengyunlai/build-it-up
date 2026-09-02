@@ -230,10 +230,25 @@ git clone git@github.com:Chengyunlai/build-it-up.git
 
 安装完成后，重启或刷新 Codex 的 skill 列表，然后使用 `$build-it-up` 调用。
 
+## 许可证与外部集成
+
+本项目采用 [MIT License](LICENSE)。许可证覆盖本仓库中的 skill 指令、参考文档和示例文字；使用、修改或再分发时，请保留 `LICENSE` 中的版权和许可声明。
+
+文档中提到的 Codex、draw.io / diagrams.net、MCP server、浏览器扩展、第三方插件和外部仓库不属于本项目的再许可范围，各自的名称、代码、商标和服务遵循其所有者的条款。文档中的链接和集成建议不代表本项目对第三方项目的官方背书、持续可用性或安全保证。安装第三方工具前，应检查其来源、权限、维护状态和适用许可证。
+
+公开发布前建议确认：
+
+- 仓库根目录存在 `LICENSE`，且 README 能直接链接到它。
+- README 的安装命令、skill 名称和远程仓库地址一致。
+- 不要把个人 token、私有 issue URL、桌面路径或本地配置提交到仓库。
+- 不要把某个环境中已配置的 MCP / draw.io 能力写成所有用户都能使用的能力。
+- 第三方链接失效或方案变化时，更新对应参考文档，并保留“当前未验证”的边界说明。
+
 ## 仓库结构
 
 ```text
 build-it-up/
+├── LICENSE                         # MIT 许可证
 ├── SKILL.md                         # skill 的核心行为规范
 ├── agents/
 │   └── openai.yaml                  # Codex UI 名称、简介和默认提示
