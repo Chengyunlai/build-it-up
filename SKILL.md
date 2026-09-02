@@ -23,6 +23,7 @@ description: 在开始写代码前，把产品或工程需求整理成通俗易�
 - 只有在操作确实成功后，才能声称 issue 或 draw.io 文档已创建、已链接或已同步。
 - 代码实施完成后的“阶段完成卡”是可选流程，不是默认的额外讨论。完成代码和适用验证后，只询问一次用户是否需要；用户拒绝就直接结束，不再追问。
 - 这是一个从思想到代码再回到证据的闭环：issue/设计记录定义意图，example 展示最短公共 API 组装路径，断点指南解释关键状态，验证结果证明行为，commit 固化本次实现。不能只在聊天中解释而不把闭环记录落到仓库。
+- Commit 不是随手写的收尾备注，而是闭环中的正式记录。每次提交都要按 [references/commit-recording.md](references/commit-recording.md) 使用统一写法；提交标题和记录正文的主要语言根据用户当前语言确定。
 
 ## 工作流程
 
@@ -185,7 +186,7 @@ Commit
     └── 回链 Issue、Example、断点、验证命令和 Commit
 ```
 
-实现前，issue 或设计记录必须预先写出：目标 example 路径、最短组装调用、关键断点候选和验证方式。实现时，优先让 example 通过公开 API 运行真实场景；不要只写内部单元测试来代替用户可理解的使用路径。实现后，按 [references/implementation-loop.md](references/implementation-loop.md) 生成或更新记录，并使用真实 commit hash 关联本次结果。
+实现前，issue 或设计记录必须预先写出：目标 example 路径、最短组装调用、关键断点候选和验证方式。实现时，优先让 example 通过公开 API 运行真实场景；不要只写内部单元测试来代替用户可理解的使用路径。实现后，按 [references/implementation-loop.md](references/implementation-loop.md) 生成或更新记录，并使用真实 commit hash 关联本次结果。提交前读取 [references/commit-recording.md](references/commit-recording.md)，按当前用户语言生成 commit message。
 
 ## 工具路由
 

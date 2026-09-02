@@ -40,8 +40,9 @@
 
 ### Commit 关联
 - Issue：<issue URL 或 key>
-- 实现 commit（C1）：<固化代码、example 和测试的完整 SHA、分支、提交摘要>
-- 记录 commit（C2）：<固化阶段完成卡和回链记录的完整 SHA、分支、提交摘要；如果与 C1 相同，明确说明>
+- 记录语言：<中文 / English / 用户指定语言>
+- 实现 commit（C1）：<固化代码、example 和测试的完整 SHA、分支、原始 commit message>
+- 记录 commit（C2）：<固化阶段完成卡和回链记录的完整 SHA、分支、原始 commit message；如果与 C1 相同，明确说明>
 - 变更文件：<example、公开 API、测试和记录文件>
 
 ### 可回放说明

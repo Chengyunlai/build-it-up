@@ -13,7 +13,7 @@
 | 组装入口 | 从哪个公开入口开始，依赖如何注入，如何启动 | example 的 README、入口文件、测试 |
 | 关键断点 | 在哪里暂停，应该观察什么值、状态和调用关系 | example README 或实现记录 |
 | 验证证据 | 执行了什么命令，得到什么结果 | issue 评论、实现记录、CI 输出 |
-| Commit | 哪一次提交固化了这次阶段结果 | issue、实现记录和 Git 历史 |
+| Commit | 哪一次提交固化了这次阶段结果，提交信息如何表达 | issue、实现记录和 Git 历史 |
 | 实现记录 | 如何从需求回放到代码和证据 | `docs/implementation/`、设计文档或仓库既有记录目录 |
 
 不要为了满足表格而凭空创建多个重复文档。优先更新已有 issue、设计记录和 example 文档；只有仓库没有合适位置时，才新建一份实现记录。
@@ -102,12 +102,12 @@ Example 不是演示装饰，也不是只为测试服务的 fixture。它必须�
 
 代码、测试和 example 验证完成后，更新闭环记录：
 
-建议使用两个有明确关系的 commit，避免“记录自身包含自己 SHA”的循环：
+提交前先按 [commit-recording.md](commit-recording.md) 确定语言、type、scope 和标题；不要沿用“update”“完成任务”这类无法回放的标题。建议使用两个有明确关系的 commit，避免“记录自身包含自己 SHA”的循环：
 
-1. **实现 commit（C1）**：提交代码、example、测试和必要的公开文档。取得真实的 C1 SHA、分支和提交摘要。
+1. **实现 commit（C1）**：提交代码、example、测试和必要的公开文档。取得真实的 C1 SHA、分支、提交标题和提交语言。
 2. 在 C1 的工作树上运行验证，记录实际命令和结果；不要只写“已测试”。
 3. 回填最短组装路径和断点定位；如果符号发生变化，更新为 C1 可用的定位。
-4. **记录 commit（C2）**：提交阶段完成卡、实现记录和 issue/example 回链。C2 的记录正文必须同时写明 C1 和 C2；C1 是代码完成证据，C2 是闭环记录完成证据。
+4. **记录 commit（C2）**：使用 `docs` 类型提交阶段完成卡、实现记录和 issue/example 回链。C2 的记录正文必须同时写明 C1 和 C2；C1 是代码完成证据，C2 是闭环记录完成证据。
 5. 在 issue 中加入实现记录、example、验证命令、C1 和 C2 的链接。
 6. 在 example 文档或实现记录中加入 issue key、C1 SHA 和 C2 SHA。
 7. 如果使用了 draw.io 图，记录实际文件/URL、issue key 和对应 C1/C2；如果没有实际连接能力，记录 Mermaid 和手工交接状态。
@@ -120,7 +120,9 @@ Example 不是演示装饰，也不是只为测试服务的 fixture。它必须�
 # <阶段名称>
 
 - Issue：<issue URL 或 key>
-- Commit：<完整 SHA>（<提交摘要>）
+- 记录语言：<中文 / English / 用户指定语言>
+- 实现 commit（C1）：<完整 SHA>（<原始 commit message>）
+- 记录 commit（C2）：<完整 SHA>（<原始 commit message>）
 - Example：<路径和启动命令>
 - 状态：<已实现 / 已验证 / 部分完成>
 
@@ -141,6 +143,9 @@ Example 不是演示装饰，也不是只为测试服务的 fixture。它必须�
 
 ## 变更映射
 <issue / 设计记录 → 文件 → example → 测试 → commit>
+
+## Commit 规范检查
+<标题语言、type/scope、单一目的、实际验证和 C1/C2 关系>
 
 ## 下一阶段入口
 <从哪个已完成结果继续；不在这里重新提出设计问题>

@@ -10,6 +10,15 @@
 
 它还维护一条可回放的实现闭环：issue / 设计记录说明为什么做，example 展示最短公共 API 组装路径，断点指南说明如何观察，测试提供证据，commit 固化变更，最终实现记录把这些对象重新串起来。
 
+Commit 记录也属于这条闭环的一部分：类型前缀保持稳定，标题主体和记录正文根据当前用户语言切换，避免中文需求最后留下难以理解的英文空泛提交，或英文任务混入中文标题。例如：
+
+```text
+中文任务：feat(example): 增加最短公开组装路径
+英文任务：feat(example): add the shortest public assembly path
+```
+
+默认将代码与验证放在实现 commit（C1），将阶段完成卡和实现记录放在记录 commit（C2）。阶段完成卡会保存两个 commit 的完整 SHA、原始 message、语言和关联对象，方便后续从 Git 历史回放本次实现。详细规则见 [`references/commit-recording.md`](references/commit-recording.md)。
+
 每张决策卡片默认都会带一张或几张由 AI 自动选择类型的图：用流程图表达先后，用时序图表达协作，用状态图表达变化，用范围图或对比图表达取舍。图中会显式标记推荐方向、本阶段范围和暂不包含的内容。
 
 这里的“图”不是把文字换成几个方框，而是展示一个真实场景：用户输入什么、系统具体做了什么、数据或状态如何变化、用户最终看到什么，以及这个结果验证了什么。例如，不画“验证应用 → 尽快获得证据”，而画：
@@ -211,7 +220,8 @@ build-it-up/
     ├── issue-template.md             # issue 结构与评审清单
     ├── drawio-binding.md             # Mermaid 与 draw.io 的绑定规则
     ├── implementation-loop.md        # issue、example、断点、验证与 commit 闭环
-    └── stage-completion-card.md      # 阶段完成后的可回放汇报模板
+    ├── stage-completion-card.md      # 阶段完成后的可回放汇报模板
+    └── commit-recording.md           # 按用户语言规范化 commit 的规则
 ```
 
 ## 本地校验
