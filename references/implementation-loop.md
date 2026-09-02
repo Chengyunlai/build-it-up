@@ -15,8 +15,11 @@
 | 验证证据 | 执行了什么命令，得到什么结果 | issue 评论、实现记录、CI 输出 |
 | Commit | 哪一次提交固化了这次阶段结果，提交信息如何表达 | issue、实现记录和 Git 历史 |
 | 实现记录 | 如何从需求回放到代码和证据 | `docs/implementation/`、设计文档或仓库既有记录目录 |
+| 项目导航 | 其他人和 AI 从哪里找到规则、context、example 和实现记录 | 项目 `README.md`、`AGENTS.md` / 等价文件、context、`examples/README.md` |
 
 不要为了满足表格而凭空创建多个重复文档。优先更新已有 issue、设计记录和 example 文档；只有仓库没有合适位置时，才新建一份实现记录。
+
+Example 和项目级导航的目录、命名、读取顺序及同步关系遵循 [project-integration.md](project-integration.md)。项目可以沿用已有目录名称，但必须确定唯一的 canonical example 根目录，并在项目 README、context 和 AGENTS / 等价 agents 文件中说明。
 
 ## 实现前：在 issue 中预埋追踪点
 
@@ -28,6 +31,7 @@ issue 或设计记录在开始编码前至少补充：
 - **关键断点候选**：至少包括入口、核心路由/组装、状态或数据变化、最终输出四类观察点中适用的部分。
 - **验证方法**：一条最小命令和预期输入/输出。
 - **记录归属**：实现完成后要更新哪个 example 文档、issue 或实现记录。
+- **项目导航**：example 根目录、`examples/README.md` 索引、项目 README、context 和 AGENTS / 等价 agents 文件的位置。
 
 如果这些信息还未知，不要停下来追问所有实现细节；先标记为“待实现中确认”，实现后必须补齐。
 
@@ -111,6 +115,7 @@ Example 不是演示装饰，也不是只为测试服务的 fixture。它必须�
 5. 在 issue 中加入实现记录、example、验证命令、C1 和 C2 的链接。
 6. 在 example 文档或实现记录中加入 issue key、C1 SHA 和 C2 SHA。
 7. 如果使用了 draw.io 图，记录实际文件/URL、issue key 和对应 C1/C2；如果没有实际连接能力，记录 Mermaid 和手工交接状态。
+8. 按 [project-integration.md](project-integration.md) 检查项目 README、context、AGENTS / 等价 agents 文件和 example 总索引是否能导航到本阶段；把稳定导航和记录放入 C2。
 
 如果仓库流程要求把代码和记录放在同一个 commit，可以先写入不含 SHA 的记录，再提交代码，随后立即修订记录并 amend；最终报告仍要明确“代码内容和记录内容在同一最终 SHA 中”。不要声称一个尚未创建的 SHA 已经被记录。
 
@@ -159,4 +164,5 @@ Example 不是演示装饰，也不是只为测试服务的 fixture。它必须�
 - 保留历史 commit 作为当时证据，不覆盖历史事实。
 - 在新记录中写明“基于哪个 commit 迭代到哪个实现 commit / 记录 commit”。
 - 如果 example、公开 API 或调用路径改变，同步更新 issue、example 文档和断点指南。
+- 如果新增阶段或 example，放入唯一的 canonical example 根目录，并更新 `examples/README.md`；如果项目目标、术语、架构边界或验证入口改变，同步更新 context。README 和 AGENTS / 等价 agents 文件只在导航或稳定工作规则改变时更新。
 - 如果记录与代码冲突，优先以当前工作树和实际验证为准，并明确指出记录已过期。

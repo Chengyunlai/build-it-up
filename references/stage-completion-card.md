@@ -45,6 +45,12 @@
 - 记录 commit（C2）：<固化阶段完成卡和回链记录的完整 SHA、分支、原始 commit message；如果与 C1 相同，明确说明>
 - 变更文件：<example、公开 API、测试和记录文件>
 
+### 项目导航
+- Example 总索引：<`examples/README.md` 或仓库既有 canonical 索引路径>
+- 项目 README：<导航到本阶段 example 的章节或链接>
+- Context：<本阶段影响的稳定事实；没有变化则写“未变化”>
+- AGENTS / 等价 agents 文件：<读取顺序或规则是否更新；没有变化则写“未变化”>
+
 ### 可回放说明
 <用户如何在其他 IDE + AI 中打开该 commit、运行 example、按断点顺序观察并让 AI 解释>
 
@@ -90,4 +96,5 @@ sequenceDiagram
 - “本阶段没有完成”要区分未实现、未验证和有意延期。
 - 阶段完成卡中的断点使用文件 + 符号或测试名定位，不能只依赖行号。
 - 阶段完成卡必须能从 issue 追到 example、从 example 追到实现 commit、从实现 commit 追到验证结果，再追到记录 commit；如果采用单一最终 commit，也要明确说明代码与记录如何在同一个 SHA 中闭合。
+- 阶段完成卡还必须能从项目 README、context 和 AGENTS / 等价 agents 文件导航到 example 总索引；这些入口不能只在聊天中解释。
 - 代码完成后输出阶段完成卡不会自动授权创建新 issue、修改 draw.io 或开始下一阶段；这些动作需要用户另行提出或明确授权。

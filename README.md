@@ -8,7 +8,7 @@
 4. 可评审、可验收的 issue。
 5. 在条件满足时，与 draw.io 文档互相链接的图表交付物。
 
-它还维护一条可回放的实现闭环：issue / 设计记录说明为什么做，example 展示最短公共 API 组装路径，断点指南说明如何观察，测试提供证据，commit 固化变更，最终实现记录把这些对象重新串起来。
+它还维护一条可回放的实现闭环：issue / 设计记录说明为什么做，统一目录中的 example 展示最短公共 API 组装路径，断点指南说明如何观察，测试提供证据，commit 固化变更，最终实现记录把这些对象重新串起来。项目 README、context 和 AGENTS / 等价 agents 文件会说明这些入口，让其他 IDE 和 AI 不必依赖原始对话才能接手。
 
 Commit 记录也属于这条闭环的一部分：类型前缀保持稳定，标题主体和记录正文根据当前用户语言切换，避免中文需求最后留下难以理解的英文空泛提交，或英文任务混入中文标题。例如：
 
@@ -44,6 +44,8 @@ Commit 记录也属于这条闭环的一部分：类型前缀保持稳定，标�
 第一轮还会主动报告图表能力：Mermaid 是否可以直接生成、是否检测到 draw.io 网页版或桌面版控制能力，以及当前可以直接交付什么。即使用户没有主动提到 draw.io，也会看到这项状态说明；它只是能力告知，不会变成新的讨论问题。
 
 代码实施完成并通过验证后，还有一个可选流程：AI 会只询问一次是否生成“阶段完成卡”。用户选择生成时，阶段完成卡不仅包含真实 example、关键路径断点、图和验证证据，还会写入仓库记录，并关联 issue、example 和完成 commit；用户选择不需要时，流程直接结束，不会再次进入需求讨论。如果用户一开始明确要求闭环记录，则直接执行，不再询问。
+
+每个阶段的 example 都放在项目唯一的 canonical example 根目录下；默认结构是 `examples/<stage-id>-<slug>/`，由 `examples/README.md` 统一索引。实现阶段还会检查项目级 `README.md`、`docs/context.md`（或仓库已有 context 入口）和 `AGENTS.md`（或等价 agents 文件），让人和 AI 知道先读什么、如何运行 example、哪些记录需要同步。完整规则见 [`references/project-integration.md`](references/project-integration.md)。
 
 ## 适合解决什么问题
 
@@ -84,7 +86,8 @@ flowchart TD
     Q --> R{是否生成阶段完成卡}
     R -- 否 --> S[普通完成摘要并结束]
     R -- 是 --> T[输出断点、example、图和验证证据]
-    T --> P
+    T --> U[同步项目 README、context、agents、example 索引和实现记录]
+    U --> P
 ```
 
 ## 关键行为
@@ -155,6 +158,21 @@ ISSUE-123__user-login-flow
 
 本仓库没有虚构的 draw.io API 或固定连接器。如果当前环境无法控制 draw.io，skill 会提供 Mermaid 源码、建议文件名和手工导入及互链步骤，并明确说明哪些内容仍需手工完成。
 
+### 项目级导航与 Example
+
+实现阶段不会把 example 写到聊天消息或临时目录里。它会先识别项目已有的 example、context 和 AI 指令约定；没有约定时，默认使用：
+
+```text
+examples/                         所有阶段 example 的唯一根目录
+examples/README.md                阶段 example 总索引
+examples/<stage-id>-<slug>/       当前阶段的独立目录和 README
+docs/context.md                   项目长期事实和架构入口
+AGENTS.md                         其他 AI / 贡献者的读取顺序与工作规则
+docs/implementation/<stage-id>.md 阶段完成卡与实现记录
+```
+
+每个 example README 都要能独立回答“验证哪个阶段、怎么运行、输入是什么、输出是什么、在哪里打断点、对应哪个 issue 和 commit”。项目 README 负责导航，context 只记录稳定事实，AGENTS / 等价文件只记录稳定工作规则；阶段细节放在 example 和实现记录中，避免其他 AI 需要重新阅读原始对话。仓库已有目录或指令文件时，沿用它们，但必须保持一个唯一的 example 总入口。详细规则见 [`references/project-integration.md`](references/project-integration.md)。
+
 ### 实现闭环
 
 每个实现阶段都会尽量留下以下可追溯关系：
@@ -221,7 +239,8 @@ build-it-up/
     ├── drawio-binding.md             # Mermaid 与 draw.io 的绑定规则
     ├── implementation-loop.md        # issue、example、断点、验证与 commit 闭环
     ├── stage-completion-card.md      # 阶段完成后的可回放汇报模板
-    └── commit-recording.md           # 按用户语言规范化 commit 的规则
+    ├── commit-recording.md           # 按用户语言规范化 commit 的规则
+    └── project-integration.md        # example、README、context、agents 的项目级导航规范
 ```
 
 ## 本地校验

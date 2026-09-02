@@ -49,6 +49,7 @@
 - **关键断点候选**：入口、组装、核心行为、状态变化和输出位置中适用的断点。
 - **验证命令**：一条最小复现命令和预期输入/输出。
 - **完成记录**：实现完成后更新的 example 文档、实现记录或设计文档位置。
+- **项目导航**：canonical example 根目录、example 总索引、项目 README、context 和 AGENTS / 等价 agents 文件的位置，以及本阶段需要更新的入口。
 - **Commit 关联**：完成后回填 commit SHA，并将 issue、example、断点指南和验证证据互相链接。
 - **Commit 写法**：根据用户当前语言确定标题主体语言，按仓库既有约定和 [references/commit-recording.md](commit-recording.md) 选择 type、scope 和单一结果描述。
 
@@ -76,6 +77,7 @@ Example 是理解这次实现的最短入口，不是可选装饰。若仓库没
 - 完成 commit 的完整 SHA、分支和主要变更文件。
 - 实现 commit 和记录 commit 的原始 message、语言、type/scope 以及两者的关系。
 - 实现记录与 example 文档的链接。
+- 项目 README、context、AGENTS / 等价 agents 文件和 example 总索引的链接；其他 IDE / AI 不需要阅读本次对话也能找到运行入口。
 
 ## 评审清单
 
