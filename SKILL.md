@@ -26,6 +26,7 @@ description: 在开始写代码前，把产品或工程需求整理成通俗易�
 - Commit 不是随手写的收尾备注，而是闭环中的正式记录。每次提交都要按 [references/commit-recording.md](references/commit-recording.md) 使用统一写法；提交标题和记录正文的主要语言根据用户当前语言确定。
 - draw.io 的“生成文件”“打开编辑器”“控制浏览器现有画布”和“控制 Desktop 当前画布”是不同能力，必须按 [references/drawio-binding.md](references/drawio-binding.md) 使用 D0-D4 分级；没有真实工具探测和成功回读，不得声称已连接或已驱动。
 - 所有阶段 example 必须归档在项目唯一的 canonical example 根目录下；每个阶段使用独立目录和 README，不得散落在临时目录或多个未说明的路径中。项目 README、context 和 AGENTS / 等价 agents 文件必须说明这个目录、读取顺序、运行入口和同步规则。详细规范见 [references/project-integration.md](references/project-integration.md)。
+- 每个阶段 example 必须同时有 `core/` 和 `user_code/` 两部分；`user_code/` 是使用者主线和设计验收入口，`core/` 是对核心实现的解释。若 `user_code/` 不清爽，优先回查公开 API 和组装边界，不能只增加教程文字。详细规范见 [references/example-contract.md](references/example-contract.md)。
 
 ## 工作流程
 
@@ -37,9 +38,8 @@ description: 在开始写代码前，把产品或工程需求整理成通俗易�
 6. 所有关键决策完成后，按 [references/issue-template.md](references/issue-template.md) 组装完整 issue 草案，并展示一份便于人快速审阅的“最终共识卡片”。此时仍然不要发布 issue，除非用户明确确认。
 7. 用户明确确认最终共识后，通过仓库可用的 tracker 创建或更新 issue。使用 issue 标识作为相关图表名称和链接的统一主键。如果没有 tracker，则保存 Markdown issue 产物，并明确说明它只是本地草稿，不能假装已经发布。
 8. 如果用户要求连接 draw.io，按 [references/drawio-binding.md](references/drawio-binding.md) 执行。环境支持时，优先使用已连接的桌面版或网页版 diagrams.net；否则提供准确的 Mermaid 源码和 draw.io 导入、互链交接步骤，并明确哪些步骤仍需手工完成。
-   连接或驱动 draw.io 时，必须先按 D0-D4 完成真实工具探测和成功回读；D1 文件交付、D2 打开网页不能替代 D3/D4 实时控制。目标等级不可用时，停止在已证实等级并交付降级结果。
 9. 完成已确认的 issue 和图表交接后停止，除非用户另外要求实现。如果用户要求实现，先复述已确认的范围，再以 issue 为行动指南开始编码，并在决策变化时同步更新 issue。
-10. 如果用户要求了实现，开始编码前先按 [references/project-integration.md](references/project-integration.md) 发现或建立项目级导航：确定 canonical example 根目录，并检查 README、context、AGENTS / 等价 agents 文件是否说明 example 的位置和读取顺序。代码修改时把本阶段 example 放入该根目录，更新 example 索引；代码路径或稳定事实变化时同步更新 context。不要把阶段细节堆进 AGENTS，那里只保留稳定工作规则。
+10. 如果用户要求了实现，开始编码前先按 [references/project-integration.md](references/project-integration.md) 和 [references/example-contract.md](references/example-contract.md) 发现或建立项目级导航：确定 canonical example 根目录，并检查 README、context、AGENTS / 等价 agents 文件是否说明 example 的位置和读取顺序。为本阶段建立 `core/` 与 `user_code/`，先让 `user_code/` 通过公开 API 跑通真实场景，再补充核心代码说明和断点；代码路径或稳定事实变化时同步更新 context。不要把阶段细节堆进 AGENTS，那里只保留稳定工作规则。
 11. 代码修改和适用验证完成后，只发送一次可选提示：“实现已完成，验证结果：<一句话结果>。是否生成阶段完成卡，展示关键路径断点、真实 example、图和验证证据？”用户确认后，按 [references/stage-completion-card.md](references/stage-completion-card.md) 输出，并把阶段完成卡、实现记录和项目级导航更新落到仓库；用户拒绝、没有回复或未要求时，直接给出普通完成摘要，不要重新开启需求访谈。
 12. 如果用户明确要求“闭环记录”“把理解路径落到 example / issue / commit”或同等意思，则不再把阶段完成卡当作可选项：实现后直接完成 [references/implementation-loop.md](references/implementation-loop.md) 和 [references/project-integration.md](references/project-integration.md) 要求的记录、链接和验证。
 
@@ -210,4 +210,4 @@ Commit
 - 如果仓库配置了 `taskctl`，issue 操作和状态同步遵循 `manage-taskboard` skill。
 - 只有用户要求连接网页版或桌面版 draw.io，且环境确实提供相应能力时，才使用应用内浏览器或 computer-use；不要虚构 draw.io API 或 MCP 连接。
 - 每次起草 issue 都要阅读 issue 模板参考；每轮需求共识交互都要遵循 [references/decision-card.md](references/decision-card.md)；只有需要将图表绑定到 draw.io 时才阅读 draw.io 绑定参考。
-- 进入实现闭环或需要归档阶段 example 时，阅读 [references/implementation-loop.md](references/implementation-loop.md) 和 [references/project-integration.md](references/project-integration.md)。
+- 进入实现闭环或需要归档阶段 example 时，阅读 [references/implementation-loop.md](references/implementation-loop.md)、[references/project-integration.md](references/project-integration.md) 和 [references/example-contract.md](references/example-contract.md)。

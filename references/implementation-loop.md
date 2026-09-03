@@ -10,7 +10,9 @@
 | --- | --- | --- |
 | Issue / 设计记录 | 为什么做、做什么、不做什么、怎样算完成 | issue、ADR 或设计文档 |
 | Example | 用户如何用最短路径看到这个思想真的工作 | `examples/<name>/` 或仓库已有示例目录 |
-| 组装入口 | 从哪个公开入口开始，依赖如何注入，如何启动 | example 的 README、入口文件、测试 |
+| user_code | 使用者如何只通过公开 API 调用这项能力 | example 的 `user_code/` 目录 |
+| Core | 本阶段核心代码如何实现、状态如何变化 | example 的 `core/`、正式源码和实现记录 |
+| 组装入口 | 从哪个公开入口开始，依赖如何注入，如何启动 | `user_code/` README、入口文件、测试 |
 | 关键断点 | 在哪里暂停，应该观察什么值、状态和调用关系 | example README 或实现记录 |
 | 验证证据 | 执行了什么命令，得到什么结果 | issue 评论、实现记录、CI 输出 |
 | Commit | 哪一次提交固化了这次阶段结果，提交信息如何表达 | issue、实现记录和 Git 历史 |
@@ -20,15 +22,17 @@
 
 不要为了满足表格而凭空创建多个重复文档。优先更新已有 issue、设计记录和 example 文档；只有仓库没有合适位置时，才新建一份实现记录。
 
-Example 和项目级导航的目录、命名、读取顺序及同步关系遵循 [project-integration.md](project-integration.md)。项目可以沿用已有目录名称，但必须确定唯一的 canonical example 根目录，并在项目 README、context 和 AGENTS / 等价 agents 文件中说明。
+Example 和项目级导航的目录、命名、读取顺序及同步关系遵循 [project-integration.md](project-integration.md)。Example 的 `core/` / `user_code/` 双层契约遵循 [example-contract.md](example-contract.md)。项目可以沿用已有目录名称，但必须确定唯一的 canonical example 根目录，并在项目 README、context 和 AGENTS / 等价 agents 文件中说明。
 
 ## 实现前：在 issue 中预埋追踪点
 
 issue 或设计记录在开始编码前至少补充：
 
 
-- **目标 example**：路径、启动命令或入口测试。
-- **最短组装路径**：从公开导入开始，到一次真实输出结束的最短调用链。
+- **目标 example**：路径、启动命令或入口测试；必须包含 `core/` 和 `user_code/`。
+- **user_code 主线**：使用者将写的最短公开 API 调用、真实输入和真实输出。
+- **核心代码**：本阶段的核心实现文件、稳定符号、关键状态和它如何被 user_code 触发。
+- **最短组装路径**：从 `user_code/` 的公开导入开始，到一次真实输出结束的最短调用链。
 - **关键断点候选**：至少包括入口、核心路由/组装、状态或数据变化、最终输出四类观察点中适用的部分。
 - **验证方法**：一条最小命令和预期输入/输出。
 - **记录归属**：实现完成后要更新哪个 example 文档、issue 或实现记录。
@@ -38,26 +42,29 @@ issue 或设计记录在开始编码前至少补充：
 
 ## 实现中：让 example 成为最短理解路径
 
-Example 不是演示装饰，也不是只为测试服务的 fixture。它必须：
+Example 不是演示装饰，也不是只为测试服务的 fixture。它必须按 [example-contract.md](example-contract.md) 同时提供 `user_code/` 和 `core/`；其中 `user_code/` 是主线。它还必须：
 
-1. 使用用户可以调用的公开包和公开 API。
-2. 有一个尽量短的组装入口，展示依赖从哪里来、组件在哪里创建、调用在哪里发生。
+1. 让 `user_code/` 使用用户可以调用的公开包和公开 API。
+2. 让 `user_code/` 有一个尽量短的组装入口，展示依赖从哪里来、组件在哪里创建、调用在哪里发生。
 3. 包含一个真实输入、一个关键中间结果和一个真实输出。
 4. 能被单独运行或测试，不依赖读者先阅读一堆框架内部代码。
-5. 在代码旁边记录“这几行分别证明什么”，但不把实现细节复制成第二套教程。
+5. 在 `core/README.md` 旁边记录“这几行分别证明什么”，但不把实现细节复制成第二套教程。
+
+`user_code/` 的清爽度是实现验收项。如果使用者必须导入内部模块、手工组装过多框架对象、理解内部状态或复制大量代码，先回查公开 API、默认配置和组装边界；不要把复杂 user_code 直接标记为 example 完成。
 
 最短组装路径优先写成连续调用链：
 
 ```text
-公开导入
-  → 创建 Application / 入口
-  → 注入依赖
+user_code/公开导入
+  → 创建公开 Application / 入口
+  → 注入使用者确实需要提供的依赖
   → 调用公开入口
   → 传入真实输入
   → 得到可观察输出
+  → 进入 core/ 的真实实现和状态变化
 ```
 
-实现时如果发现 example 必须绕过公开 API、导入内部模块或复制大量框架内部逻辑，要把它视为设计反馈：修正组装边界或记录冲突，不要把绕过行为当作正常使用方式。
+实现时如果发现 `user_code/` 必须绕过公开 API、导入内部模块或复制大量框架内部逻辑，要把它视为设计反馈：修正组装边界或记录冲突，不要把绕过行为当作正常使用方式。`core/` 可以解释内部实现，但不能成为使用者的主入口。
 
 ## 关键断点写法
 
@@ -111,12 +118,12 @@ Example 不是演示装饰，也不是只为测试服务的 fixture。它必须�
 
 1. **实现 commit（C1）**：提交代码、example、测试和必要的公开文档。取得真实的 C1 SHA、分支、提交标题和提交语言。
 2. 在 C1 的工作树上运行验证，记录实际命令和结果；不要只写“已测试”。
-3. 回填最短组装路径和断点定位；如果符号发生变化，更新为 C1 可用的定位。
+3. 回填 `user_code/` 主线、核心代码映射和断点定位；如果符号发生变化，更新为 C1 可用的定位。
 4. **记录 commit（C2）**：使用 `docs` 类型提交阶段完成卡、实现记录和 issue/example 回链。C2 的记录正文必须同时写明 C1 和 C2；C1 是代码完成证据，C2 是闭环记录完成证据。
 5. 在 issue 中加入实现记录、example、验证命令、C1 和 C2 的链接。
 6. 在 example 文档或实现记录中加入 issue key、C1 SHA 和 C2 SHA。
 7. 如果使用了 draw.io 图，记录实际文件/URL、issue key 和对应 C1/C2；如果没有实际连接能力，记录 Mermaid 和手工交接状态。
-8. 按 [project-integration.md](project-integration.md) 检查项目 README、context、AGENTS / 等价 agents 文件和 example 总索引是否能导航到本阶段；把稳定导航和记录放入 C2。
+8. 按 [project-integration.md](project-integration.md) 和 [example-contract.md](example-contract.md) 检查项目 README、context、AGENTS / 等价 agents 文件、example 总索引以及 `core/` / `user_code/` 是否能导航到本阶段；把稳定导航和记录放入 C2。
 9. 如果涉及 draw.io，按 [drawio-binding.md](drawio-binding.md) 回填 D0-D4 能力等级、宿主 / 工具、探测与回读证据、真实 URL / 路径和未完成步骤；D1/D2 不得冒充 D3/D4。
 
 如果仓库流程要求把代码和记录放在同一个 commit，可以先写入不含 SHA 的记录，再提交代码，随后立即修订记录并 amend；最终报告仍要明确“代码内容和记录内容在同一最终 SHA 中”。不要声称一个尚未创建的 SHA 已经被记录。
@@ -130,17 +137,19 @@ Example 不是演示装饰，也不是只为测试服务的 fixture。它必须�
 - 记录语言：<中文 / English / 用户指定语言>
 - 实现 commit（C1）：<完整 SHA>（<原始 commit message>）
 - 记录 commit（C2）：<完整 SHA>（<原始 commit message>）
-- Example：<路径和启动命令>
+- Example：<路径和启动命令；先运行 `user_code/`>
+- user_code：<入口文件、公开 API 调用和真实输入 / 输出>
+- Core：<核心代码路径、稳定符号和关键状态>
 - 状态：<已实现 / 已验证 / 部分完成>
 
 ## 这次具体完成了什么
 <用户可观察结果>
 
 ## 最短组装路径
-<从公开导入到真实输出的调用链>
+<从 `user_code/` 公开导入到真实输出，再映射到 `core/` 的调用链>
 
 ## 真实 example
-<输入、输出和复现命令>
+<先列 `user_code/` 的输入、输出和复现命令，再列 `core/` 的实现对应关系>
 
 ## 关键断点
 <文件 + 符号 + 观察变量 + 预期变化>

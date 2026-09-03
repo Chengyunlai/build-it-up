@@ -21,16 +21,20 @@ docs/implementation/<stage-id>.md 阶段完成卡和实现记录
 
 ## Example 命名和内容
 
-每个阶段创建一个目录，不要把多个阶段的代码堆在一个 `example.ts` 或临时目录里：
+每个阶段创建一个目录，并按 [example-contract.md](example-contract.md) 分成 `user_code/` 主线和 `core/` 核心代码；不要把多个阶段的代码堆在一个 `example.ts` 或临时目录里：
 
 ```text
 examples/
 ├── README.md
 └── ISSUE-123-command-routing/
     ├── README.md
-    ├── main.*                 最短公共 API 组装入口
-    ├── ...                    运行所需的最小源码或 fixture
-    └── breakpoints.md         断点较多时单独拆出；少时写进 README
+    ├── user_code/
+    │   ├── README.md         使用者视角和最短公开 API 路径
+    │   └── main.*            使用者真正运行的代码
+    ├── core/
+    │   ├── README.md         本次核心代码和真实源码映射
+    │   └── ...                必要时放最小核心源码 / fixture
+    └── breakpoints.md         断点较多时拆出；少时写进两个 README
 ```
 
 `<stage-id>` 优先使用已经确认的 issue key；没有 issue key 时使用稳定的 `stage-01`、`stage-02` 等阶段编号。`<slug>` 用当前记录语言的短描述。目录一旦被其他记录引用，后续迭代不要随意改名；如果 issue key 后来才生成，保留原目录并在索引中补充 issue key，避免历史链接失效。
@@ -39,7 +43,8 @@ examples/
 
 - 它验证哪个 issue / 阶段，以及明确不验证什么。
 - 一条最短启动命令、一个具体输入和一个具体输出。
-- 从公开导入到真实结果的连续调用路径。
+- `user_code/` 从公开导入到真实结果的连续调用路径；`core/` 如何承接这条路径。
+- `user_code/` 为什么足够清爽；如果不够清爽，记录公开 API / 组装边界问题及处理结果。
 - 入口、组装、核心行为、状态变化、输出等适用断点；每个断点写稳定符号、观察变量和预期值。
 - 使用的实现 commit（C1）和记录 commit（C2），或说明当前仍未提交。
 - 指向阶段实现记录的链接。
@@ -72,7 +77,7 @@ examples/
 ```text
 开始工作前先读：README.md → AGENTS.md → context → examples/README.md → 相关实现记录
 新增阶段 example 放入 canonical example 根目录
-优先运行 example，再阅读内部实现
+先运行 `user_code/`，再按需阅读 `core/` 和正式内部实现
 修改公开 API、目录或调用路径时同步更新索引和记录
 不要把旧 commit 的行号当作当前断点
 提交前按 issue、example、验证和 commit 规则回填记录
