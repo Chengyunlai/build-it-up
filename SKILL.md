@@ -18,6 +18,7 @@ description: 在开始写代码前，把产品或工程需求整理成通俗易�
 - 第一轮必须主动报告图表能力：Mermaid、`.drawio` 文件 / URL、网页编辑器、浏览器现有画布和 Desktop 当前画布分别达到哪一级；没有真实工具探测和成功回读，就不得声称“已连接”或“可以驱动”。能力报告只是告知，不要为了它额外发起一个确认问题。规则见 [references/drawio-binding.md](references/drawio-binding.md)。
 - 第一轮禁止直接输出完整 issue、完整实现指南、长 Mermaid 图、完整风险清单或一串待确认事项；先输出决策卡片。决策卡片格式见 [references/decision-card.md](references/decision-card.md)。
 - 每张决策卡片默认必须配一张能让人“一眼看懂”的图；复杂问题可以配两到三张互补图。图的类型由 AI 根据问题自动选择，不要求用户先指定类型。图要先于长篇解释出现。
+- 图表必须根据当前要回答的问题选择正确图型，并按任务自动命名。具体选图、官方高质量参考、底部可见名称和质量检查见 [references/diagram-selection.md](references/diagram-selection.md)。
 - 用户确认前，可以只读检查仓库并生成草稿；不得写实现代码，不得创建或修改外部 issue，不得修改 draw.io 文档。
 - 把明确确认视为硬性关卡。“看起来不错”“批准”或含义同样明确的表述，才允许创建或修改 issue、图表。确认 issue 不等于授权写代码；开始实现仍需用户单独提出。
 - 只有在操作确实成功后，才能声称 issue 或 draw.io 文档已创建、已链接或已同步。
@@ -35,13 +36,14 @@ description: 在开始写代码前，把产品或工程需求整理成通俗易�
 3. 等待用户回答。用户回答后，判断是否已经具备继续推进的条件；如果具备，直接进入方案卡片或下一项被授权的行动，不要强行发明下一个问题。如果用户提出疑问，先解释疑问，不要趁机继续倾倒后续章节。
 4. 逐步形成方案。关键方向确认后，再逐渐补充正常路径、失败路径、范围、验收标准、实现顺序和测试策略。每次新增内容都要说明它解决了前一轮暴露的哪个问题；没有新的高影响决策时，不再暂停等待确认。
 5. 在每轮卡片中提供与当前决策匹配的最小图；模型足够稳定后，再增加完整 Mermaid 图或互补视图。图的复杂度随理解程度增加，不能在第一轮用十几个节点制造“看起来很完整”的假象。
-6. 所有关键决策完成后，按 [references/issue-template.md](references/issue-template.md) 组装完整 issue 草案，并展示一份便于人快速审阅的“最终共识卡片”。此时仍然不要发布 issue，除非用户明确确认。
-7. 用户明确确认最终共识后，通过仓库可用的 tracker 创建或更新 issue。使用 issue 标识作为相关图表名称和链接的统一主键。如果没有 tracker，则保存 Markdown issue 产物，并明确说明它只是本地草稿，不能假装已经发布。
-8. 如果用户要求连接 draw.io，按 [references/drawio-binding.md](references/drawio-binding.md) 执行。环境支持时，优先使用已连接的桌面版或网页版 diagrams.net；否则提供准确的 Mermaid 源码和 draw.io 导入、互链交接步骤，并明确哪些步骤仍需手工完成。
-9. 完成已确认的 issue 和图表交接后停止，除非用户另外要求实现。如果用户要求实现，先复述已确认的范围，再以 issue 为行动指南开始编码，并在决策变化时同步更新 issue。
-10. 如果用户要求了实现，开始编码前先按 [references/project-integration.md](references/project-integration.md) 和 [references/example-contract.md](references/example-contract.md) 发现或建立项目级导航：确定 canonical example 根目录，并检查 README、context、AGENTS / 等价 agents 文件是否说明 example 的位置和读取顺序。为本阶段建立 `core/` 与 `user_code/`，先让 `user_code/` 通过公开 API 跑通真实场景，再补充核心代码说明和断点；代码路径或稳定事实变化时同步更新 context。不要把阶段细节堆进 AGENTS，那里只保留稳定工作规则。
-11. 代码修改和适用验证完成后，只发送一次可选提示：“实现已完成，验证结果：<一句话结果>。是否生成阶段完成卡，展示关键路径断点、真实 example、图和验证证据？”用户确认后，按 [references/stage-completion-card.md](references/stage-completion-card.md) 输出，并把阶段完成卡、实现记录和项目级导航更新落到仓库；用户拒绝、没有回复或未要求时，直接给出普通完成摘要，不要重新开启需求访谈。
-12. 如果用户明确要求“闭环记录”“把理解路径落到 example / issue / commit”或同等意思，则不再把阶段完成卡当作可选项：实现后直接完成 [references/implementation-loop.md](references/implementation-loop.md) 和 [references/project-integration.md](references/project-integration.md) 要求的记录、链接和验证。
+6. 每张 Mermaid / draw.io 图都要生成任务名称。文件 / 页面使用稳定身份；画布底部单独放置一条可见名称，描述具体任务结果和图型，例如“图名：输入命令后创建任务｜图型：用户流程｜阶段：stage-01”。底部名称不得挡住主流程，不得只写“流程图”“系统架构”等空泛标题。多图时按视角区分名称。
+7. 所有关键决策完成后，按 [references/issue-template.md](references/issue-template.md) 组装完整 issue 草案，并展示一份便于人快速审阅的“最终共识卡片”。此时仍然不要发布 issue，除非用户明确确认。
+8. 用户明确确认最终共识后，通过仓库可用的 tracker 创建或更新 issue。使用 issue 标识作为相关图表名称和链接的统一主键。如果没有 tracker，则保存 Markdown issue 产物，并明确说明它只是本地草稿，不能假装已经发布。
+9. 如果用户要求连接 draw.io，按 [references/drawio-binding.md](references/drawio-binding.md) 执行。环境支持时，优先使用已连接的桌面版或网页版 diagrams.net；否则提供准确的 Mermaid 源码和 draw.io 导入、互链交接步骤，并明确哪些步骤仍需手工完成。网页版可用时，用户只要求“画图”也应在能力报告后主动提示一次是否导入，不得静默跳过。
+10. 完成已确认的 issue 和图表交接后停止，除非用户另外要求实现。如果用户要求实现，先复述已确认的范围，再以 issue 为行动指南开始编码，并在决策变化时同步更新 issue。
+11. 如果用户要求了实现，开始编码前先按 [references/project-integration.md](references/project-integration.md) 和 [references/example-contract.md](references/example-contract.md) 发现或建立项目级导航：确定 canonical example 根目录，并检查 README、context、AGENTS / 等价 agents 文件是否说明 example 的位置和读取顺序。为本阶段建立 `core/` 与 `user_code/`，先让 `user_code/` 通过公开 API 跑通真实场景，再补充核心代码说明和断点；代码路径或稳定事实变化时同步更新 context。不要把阶段细节堆进 AGENTS，那里只保留稳定工作规则。
+12. 代码修改和适用验证完成后，只发送一次可选提示：“实现已完成，验证结果：<一句话结果>。是否生成阶段完成卡，展示关键路径断点、真实 example、图和验证证据？”用户确认后，按 [references/stage-completion-card.md](references/stage-completion-card.md) 输出，并把阶段完成卡、实现记录和项目级导航更新落到仓库；用户拒绝、没有回复或未要求时，直接给出普通完成摘要，不要重新开启需求访谈。
+13. 如果用户明确要求“闭环记录”“把理解路径落到 example / issue / commit”或同等意思，则不再把阶段完成卡当作可选项：实现后直接完成 [references/implementation-loop.md](references/implementation-loop.md) 和 [references/project-integration.md](references/project-integration.md) 要求的记录、链接和验证。
 
 ## 讨论停止条件
 

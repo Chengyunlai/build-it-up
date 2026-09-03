@@ -2,7 +2,7 @@ interface:
   display_name: "需求落地助手"
   short_description: "把需求整理成中文 issue、Mermaid 图与可执行行动指南"
   brand_color: "#2563EB"
-  default_prompt: "使用 $build-it-up，用具体场景图和有限的决策卡片澄清这个需求；先按 D0-D4 真实探测并报告 Mermaid、.drawio 文件、网页画布和 Desktop 画布能力，信息足够后直接推进，不要进行无限追问；实现时让 user_code 作为公开 API 的清爽主线、core 作为核心实现说明，代码完成后把 example 归档到统一目录并同步项目 README、context、agents 与阶段完成卡，按用户语言规范化 commit 记录。"
+  default_prompt: "使用 $build-it-up，用具体场景图和有限的决策卡片澄清这个需求；先按 D0-D4 真实探测并报告 Mermaid、.drawio 文件、网页画布和 Desktop 画布能力，用户要求画图时自动探测并主动提供一次导入 draw.io 的可选路径；根据问题选择正确图型，按用户语言取稳定文件名，并在画布底部放置具体任务名称；信息足够后直接推进，不要进行无限追问；实现时让 user_code 作为公开 API 的清爽主线、core 作为核心实现说明，代码完成后把 example 归档到统一目录并同步项目 README、context、agents 与阶段完成卡，按用户语言规范化 commit 记录。"
 
 policy:
   allow_implicit_invocation: true
